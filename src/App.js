@@ -223,13 +223,13 @@ function App() {
         <form className="m-4" onSubmit={handleSubmit}>
           <div className="credit-card w-full lg:w-3/4 sm:w-auto shadow-lg mx-auto rounded-xl bg-darkgrey">
             <main className="mt-4 p-4">
-              <h3 className="text-xl font-semibold text-info text-left">
-                Input a smart contract address
-              </h3>
+              <h1 className="text-xl font-semibold text-info text-left">
+                Smart Contract UI
+              </h1>
+              <p><small className="text-muted">Read from a smart contract, approve, transfer, transfer from and recieve transaction messages from the blockchain.</small> </p>
+              <br />
               <div>
-                <div className="my-4">
                   <h6 className="card-subtitle mb-2 text-muted">contract</h6>
-                </div>
                 <div className="my-3">
                   <input
                     type="text"
