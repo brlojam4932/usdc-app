@@ -160,7 +160,8 @@ function App() {
       setIsTransferFrom(true);
     } catch (error) {
       console.log(error);
-      if (error) return alert("transfer from amount exceeds balance");
+      setError(true);
+      //if (error) return alert("transfer from amount exceeds balance");
     };
 
   };
@@ -179,7 +180,7 @@ function App() {
       const erc20 = new ethers.Contract(contractInfo.address, RealToken.abi, signer);
       const transaction = await erc20.approve(data.get("spender"), data.get("amount"));
       await transaction.wait();
-      console.log("Success! -- approved");
+      //console.log("Success! -- approved");
       setIsApproved(true);
     } catch (error) {
       console.log(error);
@@ -193,23 +194,28 @@ function App() {
 
   const handleAllowance = async (e) => {
     e.preventDefault();
-    if (!window.ethereum) return alert("Please install or sign-in to Metamask");
-    const data = new FormData(e.target);
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    const erc20 = new ethers.Contract(contractInfo.address, RealToken.abi, provider);
-    const signer = provider.getSigner();
-    const owner = await signer.getAddress();
-    console.log(owner);
-    const allowance = await erc20.allowance(data.get("owner"), data.get("spender"));
-    console.log(allowance.toString());
-    setIsAllowanceMsg(true);
-    setAllowanceAmount(allowance.toString());
+    try {
+      if (!window.ethereum) return alert("Please install or sign-in to Metamask");
+      const data = new FormData(e.target);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const erc20 = new ethers.Contract(contractInfo.address, RealToken.abi, provider);
+      const signer = provider.getSigner();
+      const owner = await signer.getAddress();
+      console.log(owner);
+      const allowance = await erc20.allowance(data.get("owner"), data.get("spender"));
+      console.log(allowance.toString());
+      setIsAllowanceMsg(true);
+      setAllowanceAmount(allowance.toString());
 
-    return allowance;
+      return allowance;
+
+    } catch (error) {
+      console.log(error);
+      if (error) return alert("Input correct address");
+    }
+
   }
-
-
 
   return (
     <div className="container">
@@ -217,17 +223,20 @@ function App() {
         <form className="m-4" onSubmit={handleSubmit}>
           <div className="credit-card w-full lg:w-3/4 sm:w-auto shadow-lg mx-auto rounded-xl bg-darkgrey">
             <main className="mt-4 p-4">
-              <h3 className="text-xl font-semibold text-info text-center">
+              <h3 className="text-xl font-semibold text-info text-left">
                 Input a smart contract address
               </h3>
               <div>
+                <div className="my-4">
+                  <h6 className="card-subtitle mb-2 text-muted">contract</h6>
+                </div>
                 <div className="my-3">
                   <input
                     type="text"
                     name={contractAddress}
                     className="input p-1"
                     placeholder="ERC20 contract address"
-                    style={{ background: "#1f1f1f", border: "1px solid grey", borderRadius: "4px" }}
+                    style={{ background: "#1f1f1f", borderStyle: "solid 1px", borderColor: "#7bc3ed", borderRadius: "5px", color: "white" }}
                   />
                 </div>
               </div>
@@ -242,7 +251,7 @@ function App() {
             </footer>
             <div className="px-4">
               <div className="overflow-x-auto">
-                <table className="table w-full">
+                <table className="table w-full text-primary">
                   <thead>
                     <tr>
                       <th>Name</th>
@@ -272,7 +281,7 @@ function App() {
             </div>
             <div className="px-4">
               <div className="overflow-x-auto">
-                <table className="table w-full">
+                <table className="table w-full text-primary">
                   <thead>
                     <tr>
                       <th>Address</th>
@@ -292,7 +301,7 @@ function App() {
         </form>
         <div className="m-4 credit-card w-full lg:w-3/4 sm:w-auto shadow-lg mx-auto rounded-xl bg-darkgrey">
           <div className="mt-4 p-4">
-            <h3 className="text-xl font-semibold text-info text-center">
+            <h3 className="text-xl font-semibold text-info text-left">
               Transactions / Transfers
             </h3>
             {/* transfer */}
@@ -301,6 +310,9 @@ function App() {
                 <h6 className="card-subtitle mb-2 text-muted">transfer</h6>
                 <form onSubmit={handleTransfer}>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">recipient</h6>
+                    </div>
                     <input
                       type="text"
                       name="recipient"
@@ -310,6 +322,9 @@ function App() {
                     />
                   </div>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">amount</h6>
+                    </div>
                     <input
                       type="text"
                       name="amount"
@@ -336,7 +351,7 @@ function App() {
                       {error &&
                         <div className="alert alert-dismissible alert-danger">
                           <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={() => setError(false)}></button>
-                          <strong>Oh snap!</strong> and try submitting again.
+                          <strong>Oh snap!</strong> and try submitting again. Your balance must be sufficient.
                         </div>
                       }
                     </div>
@@ -351,6 +366,9 @@ function App() {
                 <h6 className="card-subtitle mb-2 text-muted">approve</h6>
                 <form onSubmit={handleApprove}>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">spender</h6>
+                    </div>
                     <input
                       type="text"
                       name="spender"
@@ -360,6 +378,9 @@ function App() {
                     />
                   </div>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">amount</h6>
+                    </div>
                     <input
                       type="text"
                       name="amount"
@@ -394,6 +415,9 @@ function App() {
                 <h6 className="card-subtitle mb-2 text-muted">allowance</h6>
                 <form onSubmit={handleAllowance}>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">owner</h6>
+                    </div>
                     <input
                       type="text"
                       name="owner"
@@ -401,8 +425,12 @@ function App() {
                       placeholder="Owner address"
                       style={{ background: "#1f1f1f", border: "1px solid grey", borderRadius: "4px", color: "white" }}
                     />
+
                   </div>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">spender</h6>
+                    </div>
                     <input
                       type="text"
                       name="spender"
@@ -420,7 +448,7 @@ function App() {
                     </button>
                     <div className="my-3">
                       {isAllowanceMsg &&
-                        <div className="alert alert-dismissible alert-secondary">
+                        <div className="alert alert-dismissible alert-warning">
                           <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={() => setIsAllowanceMsg(false)}></button>
                           Spender can spend this amount:{" "}{allowanceAmount}{" "}
                         </div>
@@ -437,6 +465,9 @@ function App() {
                 <h6 className="card-subtitle mb-2 text-muted">transfer from</h6>
                 <form onSubmit={handleTransferFrom}>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">sender</h6>
+                    </div>
                     <input
                       type="text"
                       name="sender"
@@ -446,6 +477,9 @@ function App() {
                     />
                   </div>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">recipient</h6>
+                    </div>
                     <input
                       type="text"
                       name="recipient"
@@ -455,6 +489,9 @@ function App() {
                     />
                   </div>
                   <div className="my-3">
+                    <div>
+                      <h6 className="card-subtitle mb-2 text-muted">amount</h6>
+                    </div>
                     <input
                       type="text"
                       name="amount"
@@ -477,6 +514,12 @@ function App() {
                           <strong>Well Done!</strong> Your transfer has been completed.
                         </div>
                       }
+                      {error &&
+                        <div className="alert alert-dismissible alert-danger">
+                          <button type="button" className="btn-close" data-bs-dismiss="alert" onClick={() => setError(false)}></button>
+                          <strong>Error!</strong> Transfer amount exceeds balance.
+                        </div>
+                      }
                     </div>
                   </footer>
                 </form>
@@ -491,7 +534,7 @@ function App() {
         {/* Tx List */}
         <div className="m-4 credit-card w-full lg:w-3/4 sm:w-auto shadow-lg mx-auto rounded-xl bg-darkgrey">
           <div className="mt-4 p-4">
-            <h3 className="text-xl font-semibold text-info text-center">
+            <h3 className="text-xl font-semibold text-info text-left">
               Recent Transactions
             </h3>
             <p>
