@@ -1,6 +1,6 @@
 require("@nomiclabs/hardhat-waffle");
 require('dotenv').config();
-console.log(process.env) // remove this after you've confirmed it working
+//console.log(process.env) // remove this after you've confirmed it working
 
 // This is a sample Hardhat task. To learn how to create your own go to
 // https://hardhat.org/guides/create-task.html
@@ -32,14 +32,23 @@ module.exports = {
     hardhat: {
       chainId: 1337
     },
+    // url can also be saves in the .env file
+    // url: process.env.ROPSTEN_RPC_URL || "",
     ropsten: {
       url: "https://ropsten.infura.io/v3/c7b095b87e9740878089365fc78e778d",
       accounts: [process.env.PRIVATE_KEY]
+      // accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY]
     }
   }
 };
+// Evants and Logging in Solidity - Patrick from Chainlink
+
+// to verify with ether scan - at this time 
+// https://youtu.be/KDYJC85eS5M
 
 //https://youtu.be/a0osIaAOFSE
+// at time...
+// https://youtu.be/KDYJC85eS5M?t=1201
 
 // this would go in the Robsten object above...
 // accounts: [`0x${process.env.ACCOUNT_KEY}`]

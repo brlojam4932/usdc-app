@@ -1,13 +1,17 @@
-
+// https://youtu.be/a0osIaAOFSE
 
 // npm run start
 
 // ========== steps ==============
 // npx create-react-app usdc-app
+// change into new directory...
 // cd usdc-app
 // npm i -D hardhat
 // npx hardhat
+// what do you want to do?....use up/down arrows - hit enter - simple project
 // install suggested plug-ins
+
+// note: abi = application binary interface
 
 // for smart contracts: npm i @openzeppelin/contracts
 
@@ -46,6 +50,10 @@ Token deployed to: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 
 
 //=====================Console================================
+// EdRoh
+// How to Deploy Your Smart Contract onto the Blockchain | Hardhat Tutorial
+// https://youtu.be/ajxSYMYcPuI?t=687
+
  // npx hardhat console
 
   // > const Greeter = await hre.ethers.getContractFactory("Greeter");
@@ -63,6 +71,7 @@ Token deployed to: 0x5FbDB2315678afecb367f032d93F642f64180aa3
 
 /*
 -------------------REAL TOKEN------------------------
+// npx hardhat console --network localhost
 
 > const RealToken = await hre.ethers.getContractFactory("RealToken")
 undefined

@@ -3,6 +3,8 @@ const hre = require("hardhat");
 //  https://youtu.be/KDYJC85eS5M
 // Events and Logging in Solidity
 
+// https://github.com/smartcontractkit/hardhat-starter-kit/blob/main/test/unit/APIConsumer_unit_test.js
+
 async function main() {
   await hre.run("compile");
 

@@ -78,41 +78,51 @@ function App() {
 
 
   // Get token info: name, symbol and totalSupply
-  const handleSubmit = async (e) => {
+  const handleGetTokenInfo = async (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    try {
+      if (!window.ethereum) return alert("Please install or sign-in to Metamask");
+      const data = new FormData(e.target);
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
 
-    const erc20 = new ethers.Contract(data.get(contractAddress), RealToken.abi, provider);
+      const erc20 = new ethers.Contract(data.get(contractAddress), RealToken.abi, provider);
 
-    const tokenName = await erc20.name();
-    const tokenSymbol = await erc20.symbol();
-    const totalSupply = await erc20.totalSupply();
+      const tokenName = await erc20.name();
+      const tokenSymbol = await erc20.symbol();
+      const totalSupply = await erc20.totalSupply();
 
-    setContractInfo({
-      address: data.get(contractAddress),
-      tokenName,
-      tokenSymbol,
-      totalSupply,
-    });
-    setContractAddress(data);
+      setContractInfo({
+        address: data.get(contractAddress),
+        tokenName,
+        tokenSymbol,
+        totalSupply,
+      });
+      setContractAddress(data);
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
 
   // function balanceOf(address account) external view returns (uint256)
 
   const getMyBalance = async () => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    await provider.send("eth_requestAccounts", []);
-    const erc20 = new ethers.Contract(contractInfo.address, RealToken.abi, provider);
-    const signer = provider.getSigner();
-    const signerAddress = await signer.getAddress();
-    const balance = await erc20.balanceOf(signerAddress);
+    try {
+      if (!window.ethereum) return alert("Please install or sign-in to Metamask");
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      await provider.send("eth_requestAccounts", []);
+      const erc20 = new ethers.Contract(contractInfo.address, RealToken.abi, provider);
+      const signer = provider.getSigner();
+      const signerAddress = await signer.getAddress();
+      const balance = await erc20.balanceOf(signerAddress);
 
-    setBalanceInfo({
-      address: signerAddress,
-      balance: String(balance)
-    });
+      setBalanceInfo({
+        address: signerAddress,
+        balance: String(balance)
+      });
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
 
@@ -220,7 +230,7 @@ function App() {
   return (
     <div className="container">
       <div>
-        <form className="m-4" onSubmit={handleSubmit}>
+        <form className="m-4" onSubmit={handleGetTokenInfo}>
           <div className="credit-card w-full lg:w-3/4 sm:w-auto shadow-lg mx-auto rounded-xl bg-darkgrey">
             <main className="mt-4 p-4">
               <h1 className="text-xl font-semibold text-info text-left">
@@ -229,7 +239,7 @@ function App() {
               <p><small className="text-muted">Read from a smart contract, approve, transfer, transfer from and recieve transaction messages from the blockchain.</small> </p>
               <br />
               <div>
-                  <h6 className="card-subtitle mb-2 text-muted">contract</h6>
+                <h6 className="card-subtitle mb-2 text-muted">contract</h6>
                 <div className="my-3">
                   <input
                     type="text"
