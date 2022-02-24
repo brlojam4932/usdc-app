@@ -35,7 +35,7 @@ module.exports = {
     // url can also be saves in the .env file
     // url: process.env.ROPSTEN_RPC_URL || "",
     ropsten: {
-      url: "https://ropsten.infura.io/v3/c7b095b87e9740878089365fc78e778d",
+      url: process.env.ROPSTEN_RPC_URL || "",
       accounts: [process.env.PRIVATE_KEY]
       // accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY]
     }
