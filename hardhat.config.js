@@ -34,11 +34,13 @@ module.exports = {
     },
     // url can also be saves in the .env file
     // url: process.env.ROPSTEN_RPC_URL || "",
+    /*
     ropsten: {
       url: process.env.ROPSTEN_RPC_URL || "",
       accounts: [process.env.PRIVATE_KEY]
       // accounts: process.env.PRIVATE_KEY !== undefined ? [process.env.PRIVATE_KEY]
     }
+    */
   }
 };
 // Evants and Logging in Solidity - Patrick from Chainlink
