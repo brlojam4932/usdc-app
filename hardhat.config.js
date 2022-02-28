@@ -53,10 +53,6 @@ module.exports = {
 // this would go in the Robsten object above...
 // accounts: [`0x${process.env.ACCOUNT_KEY}`]
 
-// in cmd line...
-// set ACCOUNT_KEY="c854a90630e28a52f889391c443f66eb6541cf9372b972b733a857302d514144"
-// youtuber writes in cmd line: source ~/.zshrc
-// i don't know what that means but he says we "reference" - i did not try it so it did not work
 
 // ========== steps ==============
 // npx create-react-app usdc-app
